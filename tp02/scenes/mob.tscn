@@ -1,0 +1,96 @@
+[gd_scene load_steps=16 format=3 uid="uid://dtgvvlcvdvq7j"]
+
+[ext_resource type="Script" uid="uid://bxj3fi0bin30s" path="res://scripts/mob.gd" id="1_bsing"]
+[ext_resource type="Texture2D" uid="uid://dermr3kua3hjk" path="res://assets/flying_toaster_fix.png" id="2_d4cuo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7rje5"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmvck"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhf3r"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6d7o"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6wxj"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i52wx"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqhco"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucrbb"]
+atlas = ExtResource("2_d4cuo")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3sygh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7rje5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bmvck")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhf3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6d7o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6wxj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i52wx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jqhco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucrbb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dn3jn"]
+radius = 22.0
+height = 62.0
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_hotlo"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wdney"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_8yneb"]
+states/flying/node = SubResource("AnimationNodeStateMachine_hotlo")
+states/flying/position = Vector2(455, 71)
+transitions = ["Start", "flying", SubResource("AnimationNodeStateMachineTransition_wdney")]
+
+[node name="Mob" type="CharacterBody2D" groups=["mobs"]]
+script = ExtResource("1_bsing")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_3sygh")
+frame_progress = 0.950596
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_dn3jn")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_8yneb")

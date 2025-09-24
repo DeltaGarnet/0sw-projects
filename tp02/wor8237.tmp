@@ -1,0 +1,18 @@
+[gd_scene load_steps=6 format=3 uid="uid://cn60u1remo3k0"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_3ufp4"]
+[ext_resource type="PackedScene" uid="uid://cv3ash4ewjtai" path="res://player.tscn" id="1_pcljh"]
+[ext_resource type="Script" path="res://player.gd" id="2_5p6tg"]
+[ext_resource type="Texture2D" uid="uid://bdt70g165xcut" path="res://assets/icon.svg" id="2_eu7u7"]
+[ext_resource type="PackedScene" uid="uid://b6i8f68xjrlft" path="res://bullet.tscn" id="3_q42pc"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_3ufp4")
+
+[node name="Player" parent="." instance=ExtResource("1_pcljh")]
+script = ExtResource("2_5p6tg")
+bullet_scene = ExtResource("3_q42pc")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(185, 125)
+texture = ExtResource("2_eu7u7")
