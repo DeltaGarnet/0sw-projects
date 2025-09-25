@@ -11,12 +11,12 @@ func _physics_process(delta):
 
 	# Si le projectile est hors de l'écran, émettre le signal
 	if is_out_of_screen():
-		emit_signal("bullet_out_of_screen", self)
+		emit_signal("bullet_out_of_screen")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("boids"):
 		body.queue_free()
-	emit_signal("bullet_out_of_screen", self)  # Émettre le signal pour recycler le projectile
+	queue_free()
 
 func is_out_of_screen() -> bool:
 	var screen_rect = get_viewport_rect()

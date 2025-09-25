@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://br6w6i2liik1d"]
+
+[ext_resource type="PackedScene" uid="uid://bkvebeb3wfbv5" path="res://scenes/boid.tscn" id="1_1o6ni"]
+
+[node name="Boid" instance=ExtResource("1_1o6ni")]
+
+[node name="Image" parent="." index="0" groups=["boids"]]
+modulate = Color(0, 0.78550386, 0.78550386, 1)

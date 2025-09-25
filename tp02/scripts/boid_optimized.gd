@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name Boid
+class_name Boido
 
 var top_speed : float = 150.0
 var top_steer : float = 1

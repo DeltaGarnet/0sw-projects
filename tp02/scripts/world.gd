@@ -1,6 +1,6 @@
 extends Node2D
 
-@export_range(3, 500, 2) var num_boids : int = 50  # Nombre cible de boids
+var num_boids : int = randi_range(10,20) # Nombre cible de boids
 #@export var debugging : bool = false :
 	#set(value):
 		#debugging = value
@@ -20,9 +20,14 @@ extends Node2D
 	set(value) :
 		enable_cohesion = value
 		update_forces()
+		
+@export var enable_seeking : bool = false  :
+	set(value) :
+		enable_seeking = value
+		update_forces()
 
 @onready var boid_scene = preload("res://scenes/boid.tscn")
-var mob_scene : PackedScene = preload("res://scenes/mob.tscn")
+@onready var boid_variant_scene = preload("res://scenes/boidVariant.tscn")
 
 # Called when the node enters the scene tree for the first time.www
 func _ready() -> void:
@@ -38,41 +43,16 @@ func _process(delta: float) -> void:
 		# Appel d'ajustement pour synchroniser le nombre de boids si le champ change
 	if num_boids != get_children().filter(func(n): return n is Boid).size():
 		adjust_boids()
+		update_forces()
 	
 func input_management():
-	if (Input.is_action_just_pressed("spawn")):
-		spawn_mob()
 	if (Input.is_action_just_pressed("quit")):
 		get_tree().quit()
+	if (Input.is_action_just_pressed("reset")):
+		reset()
 	## ALT + D pour basculer le mode débogage
 	#if (Input.is_action_just_pressed("toggle_debug")):
 		#debugging = !debugging
-		
-
-func spawn_mob():
-	var mob = mob_scene.instantiate()
-	
-	var mob_sprite = mob.get_node("AnimatedSprite2D") as AnimatedSprite2D
-	var mob_width = 64
-	
-	var direction = randf_range(-1, 1)
-	
-	var screen_size = get_viewport_rect().size
-	var screen_offset = get_viewport().get_visible_rect()
-	var random_x = 0.0
-	var random_y = 0.0
-	
-	if direction > 0:
-		random_x = -mob_width + screen_offset.position.x
-		random_y = randf_range(0, screen_size.y / 2)
-		mob.velocity.x = abs(mob.velocity.x)
-	else :
-		random_x = screen_size.x + mob_width + screen_offset.position.x
-		random_y = randf_range(0, screen_size.y / 2)
-		mob.velocity.x = -abs(mob.velocity.x)
-	
-	mob.position = Vector2(random_x, random_y)
-	add_child(mob)
 	
 func update_forces() -> void :
 	var current_boids = get_children().filter(func(n): return n is Boid)
@@ -81,6 +61,7 @@ func update_forces() -> void :
 		boid.has_cohesion = enable_cohesion
 		boid.has_alignment = enable_alignment
 		boid.has_separation = enable_separation
+		boid.has_seeking = enable_seeking
 		
 func adjust_boids():
 	var current_boids = get_children().filter(func(n): return n is Boid)
@@ -107,6 +88,32 @@ func remove_boids(count: int):
 		var random_boid = current_boids[randi_range(0, current_boids.size() - 1)]
 		current_boids.erase(random_boid)
 		random_boid.queue_free()
+		
+func reset():
+	get_tree().reload_current_scene()
+	
+func game_over():
+	var safe = false
+	var new_pos : Vector2
+	var min_dist = 150.0
+
+	while not safe:
+		# propose a random point
+		new_pos = Vector2(
+			randf_range(0.0, get_viewport_rect().size.x),1989.53)
+		safe = true
+		for b in get_tree().get_nodes_in_group("boids"):
+			if b.global_position.distance_to(new_pos) < min_dist:
+				safe = false
+				break
+
+	$Player.position = new_pos
+
+func _on_timer_timeout() -> void:
+	var boid_variant = boid_variant_scene.instantiate()
+	boid_variant.position = Vector2(randf_range(0.0, get_viewport_rect().size.x), randf_range(0.0, get_viewport_rect().size.y))
+	add_child(boid_variant)
+
 
 #func set_debug():
 	#if not is_node_ready() : return

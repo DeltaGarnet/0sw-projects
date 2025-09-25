@@ -1,13 +1,13 @@
 extends Node2D
 
-class_name Boid1
+class_name Boid
 
 var max_neighbor : int = 7
 
 # Paramètres de base du boid
 var top_steer : float = 2       # Force de rotation maximale (limite de la direction)
 var mass : float = 2.0          # Masse du boid
-var r : float = 10           # Rayon du boid (utilisé pour le calcul des distances)
+var r : float = 40           # Rayon du boid (utilisé pour le calcul des distances)
 var top_speed : float = 150.0 * 3  # Vitesse maximale du boid
 
 # Distances d'influence pour les comportements
@@ -28,9 +28,12 @@ var acceleration : Vector2 = Vector2()
 var has_cohesion : bool = true
 var has_separation : bool = true
 var has_alignment : bool = true
+var has_seeking : bool = true
 
 # Référence à l'élément Sprite (image) du boid
 @onready var sprite = $Image
+@onready var player = get_tree().get_root().get_node("World/Player")
+
 
 var debug : bool = false
 var is_chosen : bool = false
@@ -45,6 +48,7 @@ func _ready():
 	# Initialiser la position du boid de manière aléatoire sur l'écran
 	location.x = randi_range(0, get_viewport_rect().size.x as int)
 	location.y = randi_range(0, get_viewport_rect().size.y as int)
+	position = location
 
 # Fonction appelée à chaque frame
 func _process(delta):
@@ -67,7 +71,10 @@ func _process(delta):
 
 	# Mettre à jour la position du boid et gérer la limite de l'écran
 	update_position(delta)
+	push_off_edges()
 	wrap_around_screen()
+	if has_seeking :
+		seek_player()
 	
 	# Faire pivoter le sprite en fonction de la direction de la vitesse
 	if velocity.length() > 0:
@@ -94,9 +101,7 @@ func wrap_around_screen():
 	elif location.x < 0:
 		location.x = get_viewport_rect().size.x
 
-	if location.y > get_viewport_rect().size.y:
-		location.y = 0
-	elif location.y < 0:
+	if location.y < 0:
 		location.y = get_viewport_rect().size.y
 
 # Calcul de la force de séparation (éviter les collisions avec d'autres boids)
@@ -158,6 +163,20 @@ func cohesion(boids: Array) -> Vector2:
 		average_position /= total  # Moyenne des positions des boids voisins
 		return seek(average_position)  # Chercher à se rapprocher du centre de la masse
 	return Vector2()
+	
+func push_off_edges():
+	var floor_y = get_viewport_rect().size.y
+	var margin  = 500    # how close before pushing up
+	var push    = 3    # strength of the upward force
+
+	if position.y > floor_y - margin:
+		apply_force(Vector2(0, -push))
+	elif position.y < 0 + margin:
+		apply_force(Vector2(0,push))
+
+func seek_player():
+	var steer = seek(player.position)  
+	apply_force(steer)
 
 # Chercher une position cible donnée
 func seek(target: Vector2) -> Vector2:

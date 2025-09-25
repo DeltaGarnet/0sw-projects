@@ -1,7 +1,7 @@
 extends Node
 
 @export var bullet_scene : PackedScene  # Scène du projectile
-@export var pool_size : int = 20  # Taille du pool
+@export var pool_size : int = 10  # Taille du pool
 
 var bullet_pool : Array = []
 var available_bullets : Array = []
@@ -30,3 +30,4 @@ func get_bullet() -> Node2D:
 func _on_bullet_out_of_screen(bullet):
 	bullet.visible = false  # Masquer le projectile
 	available_bullets.append(bullet)  # Réintégrer le projectile dans le pool
+	bullet.position = Vector2(0,0)

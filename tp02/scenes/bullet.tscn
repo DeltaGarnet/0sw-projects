@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b6i8f68xjrlft"]
 
-[ext_resource type="Script" uid="uid://d30lkxvsngskl" path="res://scripts/bullet.gd" id="1_y25gk"]
+[ext_resource type="Script" uid="uid://crnil0dhh4bji" path="res://scripts/bullet_with_pool.gd" id="1_y25gk"]
 [ext_resource type="Texture2D" uid="uid://w42mrp5uap34" path="res://assets/laserRed01.png" id="2_l5glv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tal4f"]
@@ -20,4 +20,5 @@ texture = ExtResource("2_l5glv")
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_tal4f")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_Bullet_body_entered"]
+[connection signal="bullet_out_of_screen" from="." to="." method="_on_bullet_out_of_screen"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

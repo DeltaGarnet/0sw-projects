@@ -12,7 +12,8 @@ config_version=5
 
 config/name="tp02"
 run/main_scene="res://scenes/world.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://assets/icon.svg"
 
 [display]
@@ -28,6 +29,10 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="c04b_projectiles"
+
+[global_group]
+
+boids=""
 
 [input]
 
@@ -69,5 +74,6 @@ quit={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

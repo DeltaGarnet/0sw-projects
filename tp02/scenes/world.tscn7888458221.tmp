@@ -3,10 +3,7 @@
 [ext_resource type="Script" uid="uid://66pp1unij7dy" path="res://scripts/world.gd" id="1_71j4m"]
 [ext_resource type="Texture2D" uid="uid://dna0nym25enog" path="res://assets/back.png" id="2_71j4m"]
 [ext_resource type="PackedScene" uid="uid://cv3ash4ewjtai" path="res://scenes/player.tscn" id="2_qfnet"]
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_k0juu"]
-a = Vector2(-35.78949, -1242.5262)
-b = Vector2(-34.947327, 366.3158)
+[ext_resource type="PackedScene" uid="uid://dtgvvlcvdvq7j" path="res://scenes/mob.tscn" id="5_7r4gi"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_71j4m")
@@ -23,20 +20,10 @@ texture = ExtResource("2_71j4m")
 position = Vector2(1920, 1989.53)
 scale = Vector2(2, 2)
 
+[node name="Mob" parent="." instance=ExtResource("5_7r4gi")]
+position = Vector2(630, 617)
+scale = Vector2(2, 2)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1920, 1080)
 zoom = Vector2(1.03, 1.03)
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=["boids"]]
-position = Vector2(873, 2233)
-rotation = 1.5707964
-scale = Vector2(2.375, 2.375)
-shape = SubResource("SegmentShape2D_k0juu")
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

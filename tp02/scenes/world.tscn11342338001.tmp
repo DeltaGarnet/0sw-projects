@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn60u1remo3k0"]
+[gd_scene load_steps=6 format=3 uid="uid://cn60u1remo3k0"]
 
 [ext_resource type="Script" uid="uid://66pp1unij7dy" path="res://scripts/world.gd" id="1_71j4m"]
 [ext_resource type="Texture2D" uid="uid://dna0nym25enog" path="res://assets/back.png" id="2_71j4m"]
 [ext_resource type="PackedScene" uid="uid://cv3ash4ewjtai" path="res://scenes/player.tscn" id="2_qfnet"]
+[ext_resource type="PackedScene" uid="uid://dtgvvlcvdvq7j" path="res://scenes/mob.tscn" id="5_7r4gi"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_k0juu"]
 a = Vector2(-35.78949, -1242.5262)
@@ -21,6 +22,10 @@ texture = ExtResource("2_71j4m")
 
 [node name="Player" parent="." instance=ExtResource("2_qfnet")]
 position = Vector2(1920, 1989.53)
+scale = Vector2(2, 2)
+
+[node name="Mob" parent="." instance=ExtResource("5_7r4gi")]
+position = Vector2(630, 617)
 scale = Vector2(2, 2)
 
 [node name="Camera2D" type="Camera2D" parent="."]
